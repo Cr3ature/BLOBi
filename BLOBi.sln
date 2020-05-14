@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLOBi.Core", "src\BLOBi.Core\BLOBi.Core.csproj", "{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLOBi.Core.Tests", "test\BLOBi.Core.Tests\BLOBi.Core.Tests.csproj", "{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{2596C10B-1442-4E5D-B261-BE60A87E007B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		ca.ruleset = ca.ruleset
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Core", "01 Core", "{2C74EDA5-5CCD-4561-9BAD-446CE8650567}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1F1BB1F3-C2D9-484C-9252-F0FBE991FA31}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 TestClients", "02 TestClients", "{81326F34-6483-464A-B1C1-408F0B9E92FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLOBi.WebClient.Tests", "test\BLOBi.WebClient.Tests\BLOBi.WebClient.Tests.csproj", "{983F63C6-702C-4DB5-8954-FF745EF5D68A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{983F63C6-702C-4DB5-8954-FF745EF5D68A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{983F63C6-702C-4DB5-8954-FF745EF5D68A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{983F63C6-702C-4DB5-8954-FF745EF5D68A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{983F63C6-702C-4DB5-8954-FF745EF5D68A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{13450364-C1F7-43EA-9A9A-9ADEFFCDC1D2} = {2C74EDA5-5CCD-4561-9BAD-446CE8650567}
+		{1C11D8C8-CFDA-4477-92CB-53DCDC34E68E} = {2C74EDA5-5CCD-4561-9BAD-446CE8650567}
+		{983F63C6-702C-4DB5-8954-FF745EF5D68A} = {81326F34-6483-464A-B1C1-408F0B9E92FD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B87F2735-EB53-4E11-8948-2172E770299F}
+	EndGlobalSection
+EndGlobal

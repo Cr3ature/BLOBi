@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>David Vanderheyden</Authors>
+    <Company>David Vanderheyden</Company>
+    <Description>All ready to use Azure Blob Storage Integration Library</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>Latest</LangVersion>
+    <PackageId>BLOBi</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Product>BLOBi</Product>
+    <RepositoryUrl>https://github.com/Cr3ature/BLOBi</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
+</Project>
