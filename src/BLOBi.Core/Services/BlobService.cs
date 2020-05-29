@@ -40,35 +40,6 @@ namespace BLOBi.Core.Services
             }
         }
 
-        public async Task<bool> AppendMetaData(string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
-        {
-            BlobClient client =
-               BlobStorageManager.GetBlobClient(
-                   connectionString: _azureStorageOptions.ConnectionString,
-                   containerName: containerName,
-                   blobName: blobName);
-
-            try
-            {
-                BlobProperties properties = await client.GetPropertiesAsync(cancellationToken: cancellationToken);
-
-                IDictionary<string, string> existingMetaData = properties.Metadata;
-
-                foreach (var item in metaData)
-                {
-                    existingMetaData.Add(item);
-                }
-
-                Azure.Response<BlobInfo> response = await client.SetMetadataAsync(metadata: existingMetaData, cancellationToken: cancellationToken);
-
-                return response.GetRawResponse().Status == (int)HttpStatusCode.OK;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public async Task<bool> BlobExists(string blobObjectName, string containerName, CancellationToken cancellationToken)
         {
             BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(
@@ -199,25 +170,6 @@ namespace BLOBi.Core.Services
             }
         }
 
-        public async Task<bool> SetBlobMetaData(string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
-        {
-            BlobClient client =
-                 BlobStorageManager.GetBlobClient(
-                     connectionString: _azureStorageOptions.ConnectionString,
-                     containerName: containerName,
-                     blobName: blobName);
-
-            try
-            {
-                Azure.Response<BlobInfo> response = await client.SetMetadataAsync(metadata: metaData, cancellationToken: cancellationToken);
-                return response.GetRawResponse().Status == (int)HttpStatusCode.OK;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public async Task<bool> UndeleteBlob(string blobName, string containerName, CancellationToken cancellationToken = default)
         {
             BlobClient client =
@@ -248,6 +200,27 @@ namespace BLOBi.Core.Services
             try
             {
                 return await client.UploadAsync(objectStream, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
+        {
+            BlobClient client =
+                  BlobStorageManager.GetBlobClient(
+                      connectionString: _azureStorageOptions.ConnectionString,
+                      containerName: containerName,
+                      blobName: blobName);
+
+            try
+            {
+                return await client.UploadAsync(
+                    content: objectStream,
+                    metadata: metaData,
+                    cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
