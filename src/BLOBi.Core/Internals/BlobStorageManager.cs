@@ -5,7 +5,13 @@ namespace BLOBi.Core.Internals
     internal static class BlobStorageManager
     {
         internal static BlobContainerClient GetBlobContainerClient(string connectionString, string containerName)
-            => new BlobContainerClient(connectionString: connectionString, blobContainerName: containerName);
+        {
+            var blobContainerClient = new BlobContainerClient(connectionString: connectionString, blobContainerName: containerName);
+
+            blobContainerClient.CreateIfNotExists();
+
+            return blobContainerClient;
+        }
 
         internal static BlobServiceClient GetBlobServiceClient(string connectionString)
             => new BlobServiceClient(connectionString);
