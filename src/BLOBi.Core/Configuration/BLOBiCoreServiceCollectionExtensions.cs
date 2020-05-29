@@ -32,8 +32,9 @@ namespace BLOBi.Core
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IBlobService, BlobService>();
             services.AddScoped<IBlobContainerService, BlobContainerService>();
+            services.AddScoped<IBlobMetaDataService, BlobMetaDataService>();
+            services.AddScoped<IBlobService, BlobService>();
         }
     }
 }
