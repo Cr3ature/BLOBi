@@ -189,13 +189,15 @@ namespace BLOBi.Core.Services
             }
         }
 
-        public async Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, CancellationToken cancellationToken = default)
+        public async Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, bool allowAnonymousRead = false, CancellationToken cancellationToken = default)
         {
+            PublicAccessType publicAccessType = allowAnonymousRead ? PublicAccessType.Blob : PublicAccessType.None;
             BlobClient client =
                   BlobStorageManager.GetBlobClient(
                       connectionString: _azureStorageOptions.ConnectionString,
                       containerName: containerName,
-                      blobName: blobName);
+                      blobName: blobName,
+                      publicAccessType: publicAccessType);
 
             try
             {
@@ -207,13 +209,15 @@ namespace BLOBi.Core.Services
             }
         }
 
-        public async Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
+        public async Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, IDictionary<string, string> metaData, bool allowAnonymousRead = false, CancellationToken cancellationToken = default)
         {
+            PublicAccessType publicAccessType = allowAnonymousRead ? PublicAccessType.Blob : PublicAccessType.None;
             BlobClient client =
                   BlobStorageManager.GetBlobClient(
                       connectionString: _azureStorageOptions.ConnectionString,
                       containerName: containerName,
-                      blobName: blobName);
+                      blobName: blobName,
+                      publicAccessType: publicAccessType);
 
             try
             {

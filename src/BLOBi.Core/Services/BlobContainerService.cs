@@ -81,13 +81,29 @@ namespace BLOBi.Core.Services
             return result.GetRawResponse().Status == (int)HttpStatusCode.OK;
         }
 
-        private async Task<bool> CreateContainer(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken)
+        private async Task<bool> CreateContainer(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
         {
             BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName.ToLower());
 
             Response<BlobContainerInfo> result = await containerClient.CreateIfNotExistsAsync(metadata: metaData);
 
             return result.GetRawResponse().Status == (int)HttpStatusCode.Created;
+        }
+
+        public async Task<bool> SetContainerAccessType(string containerName, PublicAccessType accessType, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName.ToLower(), accessType);
+
+                _ = await containerClient.SetAccessPolicyAsync(accessType: accessType);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
