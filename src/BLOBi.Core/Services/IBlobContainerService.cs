@@ -8,6 +8,8 @@ namespace BLOBi.Core
 {
     public interface IBlobContainerService
     {
+        Task<bool> AppendContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default);
+
         Task<bool> CreateContainerAsync(string containerName, CancellationToken cancellationToken = default);
 
         Task<bool> CreateContainerAsync(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default);
@@ -22,6 +24,6 @@ namespace BLOBi.Core
 
         Task<bool> SetContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default);
 
-        Task<bool> AppendContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default);
+        Task<bool> SetContainerAccessType(string containerName, PublicAccessType publicAccessType, CancellationToken cancellationToken = default);
     }
 }
