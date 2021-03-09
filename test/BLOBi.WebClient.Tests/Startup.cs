@@ -17,12 +17,6 @@ namespace BLOBi.WebClient.Tests
             _configuration = configuration;
         }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddBlobICore(_configuration.GetSection("AzureStorageManagement"));
-            services.AddControllers();
-        }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -35,11 +29,13 @@ namespace BLOBi.WebClient.Tests
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
             });
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddBlobICore(_configuration.GetSection("AzureStorageManagement"));
+            services.AddControllers();
         }
     }
 }
