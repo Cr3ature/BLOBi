@@ -1,4 +1,4 @@
-# BLOBi (preview!)
+# BLOBi
 [![Build status](https://dev.azure.com/DavidVanderheyden/BLOBi/_apis/build/status/BLOBi-ASP.NET%20Core-CI)](https://dev.azure.com/DavidVanderheyden/BLOBi/_build/latest?definitionId=15)
 
 Azure Blob Storage Integration Library

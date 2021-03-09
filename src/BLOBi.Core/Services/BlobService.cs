@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using BLOBi.Core.Exceptions;
 using BLOBi.Core.Internals;
 using BLOBi.Core.Models;
 using Microsoft.Extensions.Options;
@@ -36,11 +37,16 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                  message: ex.Message,
+                  blobName: blobName,
+                  containerName: containerName,
+                  methodName: nameof(AbortCopyBlobFromUri),
+                  innerException: ex);
             }
         }
 
-        public async Task<bool> BlobExists(string blobObjectName, string containerName, CancellationToken cancellationToken)
+        public async Task<bool> BlobExists(string blobName, string containerName, CancellationToken cancellationToken)
         {
             BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(
                 connectionString: _azureStorageOptions.ConnectionString,
@@ -48,12 +54,17 @@ namespace BLOBi.Core.Services
 
             try
             {
-                BlobClient blob = containerClient.GetBlobClient(blobObjectName);
+                BlobClient blob = containerClient.GetBlobClient(blobName);
                 return await blob.ExistsAsync(cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(BlobExists),
+                   innerException: ex);
             }
         }
 
@@ -75,7 +86,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(CopyBlobFromUri),
+                   innerException: ex);
             }
         }
 
@@ -93,7 +109,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(CreateBlobSnapshot),
+                   innerException: ex);
             }
         }
 
@@ -111,7 +132,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(DeleteBlobIfExists),
+                   innerException: ex);
             }
         }
 
@@ -129,7 +155,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(DownloadBlob),
+                   innerException: ex);
             }
         }
 
@@ -148,7 +179,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(DownloadBlobTo),
+                   innerException: ex);
             }
         }
 
@@ -166,7 +202,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(GetBlobProperties),
+                   innerException: ex);
             }
         }
 
@@ -185,7 +226,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(UndeleteBlob),
+                   innerException: ex);
             }
         }
 
@@ -205,7 +251,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(UploadBlob),
+                   innerException: ex);
             }
         }
 
@@ -228,7 +279,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                   message: ex.Message,
+                   blobName: blobName,
+                   containerName: containerName,
+                   methodName: nameof(UploadBlob),
+                   innerException: ex);
             }
         }
     }

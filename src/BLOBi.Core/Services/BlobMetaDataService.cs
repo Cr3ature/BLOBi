@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using BLOBi.Core.Exceptions;
 using BLOBi.Core.Internals;
 using BLOBi.Core.Models;
 using Microsoft.Extensions.Options;
@@ -48,7 +49,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                  message: ex.Message,
+                  blobName: blobName,
+                  containerName: containerName,
+                  methodName: nameof(AppendMetaData),
+                  innerException: ex);
             }
         }
 
@@ -67,7 +73,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                message: ex.Message,
+                blobName: blobName,
+                containerName: containerName,
+                methodName: nameof(SetBlobMetaData),
+                innerException: ex);
             }
         }
 
@@ -103,7 +114,12 @@ namespace BLOBi.Core.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new BlobServiceException(
+                    message: ex.Message,
+                    blobName: blobName,
+                    containerName: containerName,
+                    methodName: nameof(UpdateBlobMetaData),
+                    innerException: ex);
             }
         }
     }
