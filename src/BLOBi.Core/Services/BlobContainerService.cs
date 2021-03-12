@@ -21,52 +21,9 @@ namespace BLOBi.Core.Services
             _azureStorageOptions = azureStorageOptions.Value;
         }
 
-        public async Task<bool> CreateContainerAsync(string containerName, CancellationToken cancellationToken)
-            => await CreateContainer(containerName, default, cancellationToken);
-
-        public async Task<bool> CreateContainerAsync(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken)
-            => await CreateContainer(containerName, metaData, cancellationToken);
-
-        public async Task<bool> DeleteContainerAsync(string containerName, CancellationToken cancellationToken)
-            => await BlobStorageManager.GetBlobContainerClient(
-                connectionString: _azureStorageOptions.ConnectionString,
-                containerName: containerName).DeleteIfExistsAsync(cancellationToken: cancellationToken);
-
-        public async Task<BlobContainerProperties> GetContainerProperties(string containerName, CancellationToken cancellationToken)
-            => await BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName).GetPropertiesAsync();
-
-        public async Task<BlobContainerPropertiesAndBlobList> GetContainerPropertiesAndFullDetails(string containerName, CancellationToken cancellationToken = default)
-        {
-            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName);
-
-            BlobContainerProperties blobContainerProperties = await containerClient.GetPropertiesAsync();
-            IEnumerable<BlobItem> blobContainerContent = containerClient.GetBlobs();
-
-            return new BlobContainerPropertiesAndBlobList
-            {
-                BlobContainerProperties = blobContainerProperties,
-                BlobItems = blobContainerContent.ToArray(),
-            };
-        }
-
-        public async Task<BlobItem[]> ListContainerContentAsync(string containerName, CancellationToken cancellationToken = default)
-        {
-            IEnumerable<BlobItem> blobs = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName).GetBlobs();
-            return await Task.FromResult(blobs.ToArray());
-        }
-
-        public async Task<bool> SetContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
-        {
-            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName);
-
-            Response<BlobContainerInfo> result = await containerClient.SetMetadataAsync(metadata: metaData, cancellationToken: cancellationToken);
-
-            return result.GetRawResponse().Status == (int)HttpStatusCode.OK;
-        }
-
         public async Task<bool> AppendContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
         {
-            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName);
+            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName);
 
             BlobContainerProperties blobContainerProperties = await containerClient.GetPropertiesAsync();
             IDictionary<string, string> existingMetaData = blobContainerProperties.Metadata;
@@ -81,20 +38,45 @@ namespace BLOBi.Core.Services
             return result.GetRawResponse().Status == (int)HttpStatusCode.OK;
         }
 
-        private async Task<bool> CreateContainer(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
+        public async Task<bool> CreateContainerAsync(string containerName, CancellationToken cancellationToken)
+                    => await CreateContainer(containerName, default, cancellationToken);
+
+        public async Task<bool> CreateContainerAsync(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken)
+            => await CreateContainer(containerName, metaData, cancellationToken);
+
+        public async Task<bool> DeleteContainerAsync(string containerName, CancellationToken cancellationToken)
+            => await BlobStorageManager.GetBlobContainerClient(
+                azureStorageOptions: _azureStorageOptions,
+                blobContainerName: containerName).DeleteIfExistsAsync(cancellationToken: cancellationToken);
+
+        public async Task<BlobContainerProperties> GetContainerProperties(string containerName, CancellationToken cancellationToken)
+            => await BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName).GetPropertiesAsync();
+
+        public async Task<BlobContainerPropertiesAndBlobList> GetContainerPropertiesAndFullDetails(string containerName, CancellationToken cancellationToken = default)
         {
-            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName.ToLower());
+            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName);
 
-            Response<BlobContainerInfo> result = await containerClient.CreateIfNotExistsAsync(metadata: metaData);
+            BlobContainerProperties blobContainerProperties = await containerClient.GetPropertiesAsync();
+            IEnumerable<BlobItem> blobContainerContent = containerClient.GetBlobs();
 
-            return result.GetRawResponse().Status == (int)HttpStatusCode.Created;
+            return new BlobContainerPropertiesAndBlobList
+            {
+                BlobContainerProperties = blobContainerProperties,
+                BlobItems = blobContainerContent.ToArray(),
+            };
+        }
+
+        public async Task<BlobItem[]> ListContainerContentAsync(string containerName, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<BlobItem> blobs = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName).GetBlobs();
+            return await Task.FromResult(blobs.ToArray());
         }
 
         public async Task<bool> SetContainerAccessType(string containerName, PublicAccessType accessType, CancellationToken cancellationToken = default)
         {
             try
             {
-                BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions.ConnectionString, containerName.ToLower(), accessType);
+                BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName.ToLower(), accessType);
 
                 _ = await containerClient.SetAccessPolicyAsync(accessType: accessType);
 
@@ -104,6 +86,22 @@ namespace BLOBi.Core.Services
             {
                 return false;
             }
+        }
+
+        public async Task<bool> SetContainerMetaData(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
+        {
+            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName);
+
+            Response<BlobContainerInfo> result = await containerClient.SetMetadataAsync(metadata: metaData, cancellationToken: cancellationToken);
+
+            return result.GetRawResponse().Status == (int)HttpStatusCode.OK;
+        }
+
+        private async Task<bool> CreateContainer(string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
+        {
+            BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(_azureStorageOptions, containerName.ToLower());
+
+            return await Task.FromResult(containerClient != null);
         }
     }
 }

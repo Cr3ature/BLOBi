@@ -25,7 +25,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                BlobStorageManager.GetBlobClient(
-                   connectionString: _azureStorageOptions.ConnectionString,
+                   azureStorageOptions: _azureStorageOptions,
                    containerName: containerName,
                    blobName: blobName);
 
@@ -62,7 +62,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                  BlobStorageManager.GetBlobClient(
-                     connectionString: _azureStorageOptions.ConnectionString,
+                     azureStorageOptions: _azureStorageOptions,
                      containerName: containerName,
                      blobName: blobName);
 
@@ -86,7 +86,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
               BlobStorageManager.GetBlobClient(
-                  connectionString: _azureStorageOptions.ConnectionString,
+                  azureStorageOptions: _azureStorageOptions,
                   containerName: containerName,
                   blobName: blobName);
 

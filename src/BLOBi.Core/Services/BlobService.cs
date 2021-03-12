@@ -26,7 +26,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                BlobStorageManager.GetBlobClient(
-                   connectionString: _azureStorageOptions.ConnectionString,
+                   azureStorageOptions: _azureStorageOptions,
                    containerName: containerName,
                    blobName: blobName);
 
@@ -49,8 +49,8 @@ namespace BLOBi.Core.Services
         public async Task<bool> BlobExists(string blobName, string containerName, CancellationToken cancellationToken)
         {
             BlobContainerClient containerClient = BlobStorageManager.GetBlobContainerClient(
-                connectionString: _azureStorageOptions.ConnectionString,
-                containerName: containerName);
+                azureStorageOptions: _azureStorageOptions,
+                blobContainerName: containerName);
 
             try
             {
@@ -72,7 +72,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                 BlobStorageManager.GetBlobClient(
-                    connectionString: _azureStorageOptions.ConnectionString,
+                    azureStorageOptions: _azureStorageOptions,
                     containerName: containerName,
                     blobName: blobName);
 
@@ -99,7 +99,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                 BlobStorageManager.GetBlobClient(
-                    connectionString: _azureStorageOptions.ConnectionString,
+                    azureStorageOptions: _azureStorageOptions,
                     containerName: containerName,
                     blobName: blobName);
 
@@ -122,7 +122,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                 BlobStorageManager.GetBlobClient(
-                    connectionString: _azureStorageOptions.ConnectionString,
+                    azureStorageOptions: _azureStorageOptions,
                     containerName: containerName,
                     blobName: blobName);
 
@@ -145,7 +145,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                 BlobStorageManager.GetBlobClient(
-                    connectionString: _azureStorageOptions.ConnectionString,
+                    azureStorageOptions: _azureStorageOptions,
                     containerName: containerName,
                     blobName: blobName);
 
@@ -168,7 +168,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                  BlobStorageManager.GetBlobClient(
-                     connectionString: _azureStorageOptions.ConnectionString,
+                     azureStorageOptions: _azureStorageOptions,
                      containerName: containerName,
                      blobName: blobName);
 
@@ -192,7 +192,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                 BlobStorageManager.GetBlobClient(
-                    connectionString: _azureStorageOptions.ConnectionString,
+                    azureStorageOptions: _azureStorageOptions,
                     containerName: containerName,
                     blobName: blobName);
 
@@ -215,7 +215,7 @@ namespace BLOBi.Core.Services
         {
             BlobClient client =
                  BlobStorageManager.GetBlobClient(
-                     connectionString: _azureStorageOptions.ConnectionString,
+                     azureStorageOptions: _azureStorageOptions,
                      containerName: containerName,
                      blobName: blobName);
 
@@ -240,7 +240,7 @@ namespace BLOBi.Core.Services
             PublicAccessType publicAccessType = allowAnonymousRead ? PublicAccessType.Blob : PublicAccessType.None;
             BlobClient client =
                   BlobStorageManager.GetBlobClient(
-                      connectionString: _azureStorageOptions.ConnectionString,
+                      azureStorageOptions: _azureStorageOptions,
                       containerName: containerName,
                       blobName: blobName,
                       publicAccessType: publicAccessType);
@@ -265,7 +265,7 @@ namespace BLOBi.Core.Services
             PublicAccessType publicAccessType = allowAnonymousRead ? PublicAccessType.Blob : PublicAccessType.None;
             BlobClient client =
                   BlobStorageManager.GetBlobClient(
-                      connectionString: _azureStorageOptions.ConnectionString,
+                      azureStorageOptions: _azureStorageOptions,
                       containerName: containerName,
                       blobName: blobName,
                       publicAccessType: publicAccessType);
