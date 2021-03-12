@@ -13,5 +13,8 @@ namespace BLOBi.Core.Models
 
         [JsonProperty("connectionString")]
         public string ConnectionString { get; set; }
+
+        [JsonProperty("useManagedIdentity")]
+        public bool UseManagedIdentity { get; set; }
     }
 }
