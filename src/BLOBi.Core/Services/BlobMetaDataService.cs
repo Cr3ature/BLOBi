@@ -6,31 +6,23 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using BLOBi.Core.Exceptions;
-using BLOBi.Core.Internals;
-using BLOBi.Core.Models;
-using Microsoft.Extensions.Options;
 
 namespace BLOBi.Core.Services
 {
     internal class BlobMetaDataService : IBlobMetaDataService
     {
-        private readonly AzureStorageManagement _azureStorageOptions;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public BlobMetaDataService(IOptions<AzureStorageManagement> azureStorageOptions)
+        public BlobMetaDataService(BlobServiceClient blobServiceClient)
         {
-            _azureStorageOptions = azureStorageOptions.Value;
+            _blobServiceClient = blobServiceClient;
         }
 
         public async Task<bool> AppendMetaData(string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
         {
-            BlobClient client =
-               BlobStorageManager.GetBlobClient(
-                   azureStorageOptions: _azureStorageOptions,
-                   containerName: containerName,
-                   blobName: blobName);
-
             try
             {
+                BlobClient client = _blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
                 BlobProperties properties = await client.GetPropertiesAsync(cancellationToken: cancellationToken);
 
                 IDictionary<string, string> existingMetaData = properties.Metadata;
@@ -60,14 +52,9 @@ namespace BLOBi.Core.Services
 
         public async Task<bool> SetBlobMetaData(string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
         {
-            BlobClient client =
-                 BlobStorageManager.GetBlobClient(
-                     azureStorageOptions: _azureStorageOptions,
-                     containerName: containerName,
-                     blobName: blobName);
-
             try
             {
+                BlobClient client = _blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
                 Azure.Response<BlobInfo> response = await client.SetMetadataAsync(metadata: metaData, cancellationToken: cancellationToken);
                 return response.GetRawResponse().Status == (int)HttpStatusCode.OK;
             }
@@ -84,14 +71,9 @@ namespace BLOBi.Core.Services
 
         public async Task<bool> UpdateBlobMetaData(string blobName, string containerName, IDictionary<string, string> metaData, CancellationToken cancellationToken = default)
         {
-            BlobClient client =
-              BlobStorageManager.GetBlobClient(
-                  azureStorageOptions: _azureStorageOptions,
-                  containerName: containerName,
-                  blobName: blobName);
-
             try
             {
+                BlobClient client = _blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
                 BlobProperties properties = await client.GetPropertiesAsync(cancellationToken: cancellationToken);
 
                 IDictionary<string, string> existingMetaData = properties.Metadata;

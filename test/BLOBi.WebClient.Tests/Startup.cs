@@ -33,7 +33,6 @@ namespace BLOBi.WebClient.Tests
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var result = _configuration.GetSection("AzureStorageManagement");
             services.AddBlobICoreWithConnectionString(_configuration.GetSection("AzureStorageConfiguration"));
             services.AddControllers();
         }
