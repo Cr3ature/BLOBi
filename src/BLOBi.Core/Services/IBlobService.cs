@@ -13,7 +13,7 @@ namespace BLOBi.Core
 
         Task<bool> BlobExists(string blobName, string containerName, CancellationToken cancellationToken = default);
 
-        Task<CopyFromUriOperation> CopyBlobFromUri(Uri source, string blobName, string containerName, CancellationToken cancellationToken = default);
+        Task<CopyFromUriOperation> CopyBlobFromUri(Uri source, string blobName, string containerName, PublicAccessType publicAccessType = PublicAccessType.None, CancellationToken cancellationToken = default);
 
         Task<BlobSnapshotInfo> CreateBlobSnapshot(string blobName, string containerName, CancellationToken cancellationToken = default);
 
@@ -27,8 +27,8 @@ namespace BLOBi.Core
 
         Task<bool> UndeleteBlob(string blobName, string containerName, CancellationToken cancellationToken = default);
 
-        Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, bool allowAnonymousRead = false, CancellationToken cancellationToken = default);
+        Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, PublicAccessType publicAccessType = PublicAccessType.None, CancellationToken cancellationToken = default);
 
-        Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, IDictionary<string, string> metaData, bool allowAnonymousRead = false, CancellationToken cancellationToken = default);
+        Task<BlobContentInfo> UploadBlob(Stream objectStream, string blobName, string containerName, IDictionary<string, string> metaData, PublicAccessType publicAccessType = PublicAccessType.None, CancellationToken cancellationToken = default);
     }
 }

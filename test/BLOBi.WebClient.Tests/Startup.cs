@@ -1,7 +1,6 @@
 using BLOBi.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +33,8 @@ namespace BLOBi.WebClient.Tests
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBlobICore(_configuration.GetSection("AzureStorageManagement"));
+            var result = _configuration.GetSection("AzureStorageManagement");
+            services.AddBlobICoreWithConnectionString(_configuration.GetSection("AzureStorageConfiguration"));
             services.AddControllers();
         }
     }

@@ -14,19 +14,22 @@ namespace BLOBi.Core.Internals
             => GetBlobContainerClient(azureStorageOptions, containerName, publicAccessType).GetBlobClient(blobName);
 
         internal static BlobContainerClient GetBlobContainerClient(AzureStorageManagement azureStorageOptions, string blobContainerName, PublicAccessType publicAccessType = PublicAccessType.None)
-            => azureStorageOptions.UseManagedIdentity
-                ? new BlobContainerClient(new Uri($"https://{azureStorageOptions.AccountName}.blob.core.windows.net/{blobContainerName}"), new Azure.Identity.DefaultAzureCredential())
-                : GetBlobContainerClientWithConnection(azureStorageOptions, blobContainerName, publicAccessType);
-
-        private static BlobContainerClient GetBlobContainerClientWithConnection(AzureStorageManagement azureStorageOptions, string blobContainerName, PublicAccessType publicAccessType)
         {
-            var blobContainerClient = string.IsNullOrWhiteSpace(azureStorageOptions.ConnectionString)
-                ? new BlobContainerClient(new Uri($"DefaultEndpointsProtocol=https;AccountName={azureStorageOptions.AccountName};AccountKey={azureStorageOptions.AccountKey};EndpointSuffix=core.windows.net"))
-                : new BlobContainerClient(azureStorageOptions.ConnectionString, blobContainerName);
+            BlobContainerClient blobContainerClient = azureStorageOptions.UseManagedIdentity
+                ? GetBlobContainerClientWithManagedIdentity(azureStorageOptions, blobContainerName)
+                : GetBlobContainerClientWithConnectionOptions(azureStorageOptions, blobContainerName);
 
             blobContainerClient.CreateIfNotExists(publicAccessType);
 
             return blobContainerClient;
         }
+
+        private static BlobContainerClient GetBlobContainerClientWithConnectionOptions(AzureStorageManagement azureStorageOptions, string blobContainerName)
+            => string.IsNullOrWhiteSpace(azureStorageOptions.ConnectionString)
+                ? new BlobContainerClient($"DefaultEndpointsProtocol=https;AccountName={azureStorageOptions.AccountName};AccountKey={azureStorageOptions.AccountKey};EndpointSuffix=core.windows.net", blobContainerName)
+                : new BlobContainerClient(azureStorageOptions.ConnectionString, blobContainerName);
+
+        private static BlobContainerClient GetBlobContainerClientWithManagedIdentity(AzureStorageManagement azureStorageOptions, string blobContainerName)
+            => new(new Uri($"https://{azureStorageOptions.AccountName}.blob.core.windows.net/{blobContainerName}"), new Azure.Identity.DefaultAzureCredential());
     }
 }
